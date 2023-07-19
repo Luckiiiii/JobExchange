@@ -1,0 +1,49 @@
+﻿@*@{
+    Layout = "_LayoutEmployer";
+}
+*@
+@model JobInfo
+<h4 class="text-center mb-4">Thêm thông tin về việc làm</h4>
+
+<div class="w-75 mx-auto border-1">
+    <form method="post" asp-controller="App" asp-action="AddJobs">
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary mb-3">Đăng bài</button>
+        </div>
+        
+        <div class="border rounded-1 border-secondary-subtle p-4 overflow-auto" style="height: 430px">
+            <div class="mb-4">
+                <label asp-for="Salary" class="form-label">Luong <span class="text-">*</span></label>
+                <input asp-for="Salary" type="text" class="form-control"  required>
+            </div>
+            <div class="mb-4">
+                <label asp-for="Address" class="form-label">Dia Chi <span class="text-">*</span></label>
+                <input asp-for="Address" type="text" class="form-control" required>
+            </div>
+                
+            <div class="mb-4">
+                <label asp-for="Position" class="form-label">Vi Tri</label>
+                <input asp-for="Position" type="text" class="form-control" required>
+            </div> 
+            <div class="mb-4">
+                <label asp-for="TypeJob" class="form-label">Loại việc làm</label>
+                <div asp-for="TypeJob">
+                    @Html.DropDownListFor(model => model.TypeJob.Id,(IEnumerable<SelectListItem>)ViewBag.listJobs,"---Select name---",new {@class="form-controller", @name = "TypeJob"})
+                    @Html.HiddenFor(model => model.TypeJob.NameJob)
+                </div>
+                @*<div asp-for="Employer">
+                    @Html.DropDownListFor(model => model.Employer.Id,(IEnumerable<SelectListItem>)ViewBag.listEmployer,"---Select name---",new {@class="form-controller", @name = "Employer"})
+                    @Html.HiddenFor(model => model.Employer.CompanyName)
+                </div>*@
+            </div>
+            <div class="">
+                <label asp-for="Describe" class="form-label">Mô tả công việc*</label>
+                <textarea asp-for="Describe" class="form-control" id="description" rows="5" required></textarea>
+            </div>
+            
+        </div>
+       
+    </form>
+</div>
+
+

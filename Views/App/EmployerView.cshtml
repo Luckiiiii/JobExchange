@@ -1,0 +1,39 @@
+﻿@*@{
+    Layout = "_LayoutEmployer";
+}*@
+@model Employer
+<h4 class="text-center mb-5">Thông tin về doanh nghiệp của bạn</h4>
+
+<div class="w-75 mx-auto">
+    <form method="post" asp-controller="App" asp-action="AddEmployer">
+        <div class="mb-4">
+            <label asp-for="CompanyName" class="form-label">Tên công ty của bạn *</label>
+            <input type="text" asp-for="CompanyName" class="form-control" required>
+        </div>
+        @*<div class="mb-4">
+            <label class="form-label">Số lượng nhân viên của công ty bạn</label>
+            <select class="form-select" aria-label="Default select example">
+                <option selected>Chọn một tùy chọn</option>
+                <option value="1">1-49</option>
+                <option value="2">50-149</option>
+                <option value="3">150-249</option>
+                <option value="4">250+</option>
+            </select>
+        </div>*@
+        <div class="mb-4">
+            <label asp-for="Email" class="form-label">Email</label>
+            <input asp-for="Email" type="email" class="form-control" id="name" required>
+        </div>
+        <div class="mb-4">
+            <label asp-for="Phone" class="form-label">Số điện thoại</label>
+            <input asp-for="Phone" type="text" class="form-control">
+        </div>
+        <div class="mb-4">
+            <label asp-for="AddressOfCompany" class="form-label">Địa chỉ</label>
+            <input asp-for="AddressOfCompany" type="text" class="form-control">
+        </div>
+        <div class="mb-4 d-flex justify-content-end">
+            <input type="submit" class="btn btn-info form-control w-auto px-3 bg-primary" value="Lưu">
+        </div>
+    </form>
+</div>

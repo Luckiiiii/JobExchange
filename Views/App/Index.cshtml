@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+</div>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p>Chào mừng, @User.Identity.Name!</p>
+
+    @if (User.IsInRole("admin"))
+    {
+        <p>Bạn là quản trị viên</p>
+    }
+    else if (User.IsInRole("Employer"))
+    {
+        <p>Bạn là nhà tuyển dụng</p>
+    }
+    else
+    {
+        <p>Bạn là người dùng thông thường</p>
+    }
+}
+else
+{
+    <p>Vui lòng đăng nhập để xem nội dung.</p>
+}

@@ -1,0 +1,54 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.Title = "Update job info";
+}
+@model IEnumerable<JobInfo>
+
+<h4 class="text-center mb-4">Cập nhật thông tin</h4>
+
+<div class="text-center">
+    <form method="post" asp-controller="" asp-action="">
+        <div class="row">
+            <div class="col-md-12">
+                <label>Id</label>
+                <input type="text" name="id" readonly />
+            </div>
+            <div class="col-md-12">
+                <label>Tên công ty</label>
+
+                <input type="text" name="name" />
+            </div>
+            <div class="col-md-12">
+                <label>Vị trí</label>
+
+                <input type="text" name="position" />
+            </div>
+            <div class="col-md-12">
+                <label>Lương</label>
+
+                <input type="text" name="salary" />
+            </div>
+            <div class="col-md-12">
+
+                <label>Dia chi</label>
+
+                <input type="text" name="address" />
+            </div>
+            <div class="col-md-12">
+                <label>Mô tả</label>
+
+                <input type="text" name="describe" />
+            </div>
+            <div class="col-md-12">
+                <label>Ngày đăng</label>
+
+                <input type="text" name="day" />
+            </div>
+
+        </div>
+        <br />
+        <button type="submit">Cập nhật</button>
+    </form>
+</div>

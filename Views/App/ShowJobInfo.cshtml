@@ -1,0 +1,44 @@
+﻿@model IEnumerable<JobInfo>
+
+<h4 class="text-center mb-4">Danh sách các công việc</h4>
+
+<div class="container">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Tên công ty</th>
+                <th>Vị trí</th>
+                <th>Lương</th>
+                <th>Địa chỉ</th>
+                <th>Mô tả</th>
+                <th>Ngày đăng</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var jobInfo in Model)
+            {
+                <tr>
+                    <td>@jobInfo.Id</td>
+                    <td>@jobInfo.Employer.CompanyName</td>
+                    <td>@jobInfo.Position</td>
+                    <td>@jobInfo.Salary</td>
+                    <td>@jobInfo.Address</td>
+                    <td>@jobInfo.Describe</td>
+                    <td>@jobInfo.PostTime</td>
+                    <td>
+                        <form asp-action="UpdateJobInfo" asp-route-id="@jobInfo.Id" method="post">
+                            <input type="submit" value="Update" class="btn btn-info"/>
+                            
+                        </form>
+                        <form asp-action="DeleteJobInfo" asp-route-id="@jobInfo.Id" method="post">
+                            
+                            <input type="submit" value="Xóa" class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa công việc này không?');" />                      
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

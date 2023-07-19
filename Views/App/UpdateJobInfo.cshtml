@@ -1,0 +1,64 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model JobInfo
+
+<h4 class="text-center mb-4">Cập nhật thông tin</h4>
+
+<div class="text-center">
+    <form method="post" asp-controller="App" asp-action="UpdateJob">
+        <div class="row">
+            <div class="col-md-12">
+                <label>Id</label>
+
+                <input type="text" value="@Model.Id" asp-for="Id"/>
+            </div>
+            <div class="col-md-12">
+                <label>Ten cong ty</label>
+
+                <input type="text" value="@Model.Employer.Id" asp-for="Employer.Id" />
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <div class="col-md-12">
+                        <label>Loại công việc</label>
+                        <select asp-for="TypeJob.Id" asp-items="@(ViewBag.ListTypeJobs)" class="form-control">
+                            <option value="">--- Chọn loại công việc ---</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-12">
+                <label>Vị trí</label>
+
+                <input type="text"value="@Model.Position" asp-for="Position" />
+            </div>
+            <div class="col-md-12">
+                <label>Lương</label>
+
+                <input type="text" value="@Model.Salary" asp-for="Salary" />
+            </div>
+            <div class="col-md-12">
+
+                <label>Dia chi</label>
+
+                <input type="text" value="@Model.Address" asp-for="Address" />
+            </div>
+            <div class="col-md-12">
+                <label>Mô tả</label>
+
+                <input type="text" value="@Model.Describe" asp-for="Describe" />
+            </div>
+            @*<div class="col-md-12">
+                <label>Ngày đăng</label>
+
+                <input type="text" name="day" />
+            </div>*@
+
+        </div>
+        <br />
+        <button type="submit">Cập nhật</button>
+    </form>
+</div>
