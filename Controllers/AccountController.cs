@@ -50,7 +50,8 @@ namespace JobExchange.Controllers
                         {
                             if (hasEmployer)
                             {
-                                return RedirectToAction("Index", "App");
+                                /* return RedirectToAction("Index", "App");*/
+                                return RedirectToAction("ShowJobInfoUser", "App");
                             }
                             else
                             {
