@@ -1,64 +1,40 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-
+﻿@{
+    Layout = "_LayoutEmployer";
+}
 @model JobInfo
+<h4 class="text-center mb-4">Cập nhập thông tin việc làm</h4>
 
-<h4 class="text-center mb-4">Cập nhật thông tin</h4>
-
-<div class="text-center">
+<div class="w-75 mx-auto border-1">
     <form method="post" asp-controller="App" asp-action="UpdateJob">
-        <div class="row">
-            <div class="col-md-12">
-                <label>Id</label>
-
-                <input type="text" value="@Model.Id" asp-for="Id"/>
-            </div>
-            <div class="col-md-12">
-                <label>Ten cong ty</label>
-
-                <input type="text" value="@Model.Employer.Id" asp-for="Employer.Id" />
-            </div>
-            <div class="col-md-12">
-                <div class="col-md-12">
-                    <div class="col-md-12">
-                        <label>Loại công việc</label>
-                        <select asp-for="TypeJob.Id" asp-items="@(ViewBag.ListTypeJobs)" class="form-control">
-                            <option value="">--- Chọn loại công việc ---</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-12">
-                <label>Vị trí</label>
-
-                <input type="text"value="@Model.Position" asp-for="Position" />
-            </div>
-            <div class="col-md-12">
-                <label>Lương</label>
-
-                <input type="text" value="@Model.Salary" asp-for="Salary" />
-            </div>
-            <div class="col-md-12">
-
-                <label>Dia chi</label>
-
-                <input type="text" value="@Model.Address" asp-for="Address" />
-            </div>
-            <div class="col-md-12">
-                <label>Mô tả</label>
-
-                <input type="text" value="@Model.Describe" asp-for="Describe" />
-            </div>
-            @*<div class="col-md-12">
-                <label>Ngày đăng</label>
-
-                <input type="text" name="day" />
-            </div>*@
-
+        <div class="d-flex justify-content-between align-items-center mb-1">
+            <input type="text" value="@Model.Id" asp-for="Id" class="d-none" />
+            <div class="text-info fw-bold">Công ty: @Model.Employer.CompanyName </div>
+            <button type="submit" class="btn btn-info mb-3">Cập nhật</button>
         </div>
-        <br />
-        <button type="submit">Cập nhật</button>
+
+        <div class="border rounded-1 border-secondary-subtle p-4 overflow-auto" style="height: 430px">
+            <div class="mb-4">
+                <label>Vị trí</label>
+                <input class="form-control" type="text" value="@Model.Position" asp-for="Position" />
+            </div>
+            <div class="mb-4">
+                <label>Lương</label>
+                <input class="form-control" type="text" value="@Model.Salary" asp-for="Salary" />
+            </div>
+            <div class="mb-4">
+                <label>Địa chỉ</label>
+                <input class="form-control" type="text" value="@Model.Address" asp-for="Address" />
+            </div>
+            <div class="mb-4">
+                <label>Loại công việc</label>
+                <select asp-for="TypeJob.Id" asp-items="@(ViewBag.ListTypeJobs)" class="form-control">
+                    <option value="">--- Chọn loại công việc ---</option>
+                </select>
+            </div>
+            <div class="">
+                <label>Mô tả</label>
+                <input class="form-control" type="text" value="@Model.Describe" asp-for="Describe" />
+            </div>
+        </div>
     </form>
 </div>

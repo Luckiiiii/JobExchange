@@ -25,7 +25,7 @@ namespace JobExchange.Controllers
         {
             if (this.User.Identity.IsAuthenticated)
             {
-                return RedirectToAction("Index", "App");
+                return RedirectToAction("ShowJobInfo", "App");
             }
             return View();
         }
@@ -75,7 +75,7 @@ namespace JobExchange.Controllers
             if (ModelState.IsValid)
             {
                 var user = new StoreUser
-                {                   
+                {
                     UserName = model.Email,
                     Email = model.Email,
                 };
@@ -103,7 +103,7 @@ namespace JobExchange.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManger.SignOutAsync();
-            return RedirectToAction("Index", "App");
+            return RedirectToAction("ShowJobInfo", "App");
         }
     }
 }

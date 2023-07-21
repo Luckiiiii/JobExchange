@@ -1,17 +1,22 @@
-﻿@model IEnumerable<JobInfo>
+﻿@{
+    Layout = "_LayoutEmployer";
+}
 
-    <h4 class="text-center mb-4">Danh sách công việc của bạn</h4>
+@model IEnumerable<JobInfo>
 
-    <div class="text-center">
-        @if (Model.Any())
-        {
-            <table class="table">
+<div class="container">
+    <h4 class="text-center mb-4 mt-4">Danh sách việc làm</h4>
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-borderless ">
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Tên công việc</th>
-                        <th>Mô tả</th>
-                        <!--Thêm các cột khác nếu cần-->
+                        <th class="text-center">Id</th>
+                        <th class="text-center" style="width: 200px">Vị trí</th>
+                        <th class="text-center">Lương</th>
+                        <th class="text-center">Mô tả</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -20,15 +25,27 @@
                         <tr>
                             <td>@jobInfo.Id</td>
                             <td>@jobInfo.Position</td>
+                            <td>@jobInfo.Salary</td>
                             <td>@jobInfo.Describe</td>
-                            <!--Thêm các cột khác nếu cần-->
+                            <td>
+                                <div class="d-flex gap-3">
+                                    <form asp-action="UpdateJobInfo" asp-route-id="@jobInfo.Id" method="post">
+                                        <input type="submit" value="Update" class="btn btn-info" />
+                                    </form>
+                                    <form asp-action="DeleteJobInfo" asp-route-id="@jobInfo.Id" method="post">
+                                        <input type="submit" value="Xóa" class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa công việc này không?');" />
+                                    </form>
+                                </div>
+                            </td>
                         </tr>
                     }
                 </tbody>
             </table>
-        }
-        else
-        {
-            <p>Không có công việc nào.</p>
-        }
-    </div>
+        </div>
+    }
+    else
+    {
+        <p>Bạn chưa đăng việc làm nào.</p>
+    }
+</div>
+

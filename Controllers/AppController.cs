@@ -3,7 +3,6 @@ using JobExchange.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Runtime;
 
 namespace JobExchange.Controllers
 {
@@ -13,7 +12,7 @@ namespace JobExchange.Controllers
         private readonly UserManager<StoreUser> _userManager;
         private readonly ILogger<AppController> _logger;
 
-        public AppController(IJobExchangeRepository repository, UserManager<StoreUser>userManager, ILogger<AppController> logger) 
+        public AppController(IJobExchangeRepository repository, UserManager<StoreUser> userManager, ILogger<AppController> logger)
         {
             _repository = repository;
             _userManager = userManager;
@@ -23,7 +22,7 @@ namespace JobExchange.Controllers
         {
             return View();
         }
-        public IActionResult EmployerView() 
+        public IActionResult EmployerView()
         {
             ViewBag.Title = "Employer View";
             return View();
@@ -34,7 +33,7 @@ namespace JobExchange.Controllers
             var allJobInfo = _repository.GetAllJobs(); // Lấy thông tin của tất cả các JobInfo từ repository
             return View(allJobInfo);
         }
-        public async Task <IActionResult> ShowJobInfoUser()
+        public async Task<IActionResult> ShowJobInfoUser()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user != null)
@@ -43,7 +42,7 @@ namespace JobExchange.Controllers
                 var existingJobInfo = await _repository.GetJobInfosByUserId(userId);
                 return View(existingJobInfo);
             }
-            
+
             return RedirectToAction("Index");
         }
         //cap nhat thong tin tuyen dung
@@ -57,7 +56,7 @@ namespace JobExchange.Controllers
 
             return View(job);
         }
-        public IActionResult UpdateJob(JobInfo model) 
+        public IActionResult UpdateJob(JobInfo model)
         {
             var existingJob = _repository.GetJobById(model.Id);
 
@@ -80,7 +79,7 @@ namespace JobExchange.Controllers
             _repository.DeleteJobInfo(id);
             return RedirectToAction("ShowJobInfo");
         }
-        
+
         //Hien thi TypeJob trong selected
         public IActionResult JobView()
         {
@@ -111,7 +110,7 @@ namespace JobExchange.Controllers
 
                     _repository.AddEntity(model);
                     _repository.SaveChanges();
-                    return RedirectToAction("ShowJobInfo");
+                    return RedirectToAction("ShowJobInfoUser");
                 }
             }
             return View();
@@ -154,7 +153,7 @@ namespace JobExchange.Controllers
 
         [HttpPost("EmployerView")]
         //Them nha tuyen dung
-        public async Task<IActionResult> AddEmployer (Employer model)
+        public async Task<IActionResult> AddEmployer(Employer model)
         {
             try
             {

@@ -1,6 +1,5 @@
 ﻿using JobExchange.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace JobExchange.Data
 {
@@ -12,14 +11,14 @@ namespace JobExchange.Data
 
         //private readonly IWebHostEnvironment _hosting;
 
-        public JobExchangeSeeder(JobExchangeContext context, IWebHostEnvironment hosting, UserManager<StoreUser>userManager, IServiceProvider serviceProvider) 
+        public JobExchangeSeeder(JobExchangeContext context, IWebHostEnvironment hosting, UserManager<StoreUser> userManager, IServiceProvider serviceProvider)
         {
-            _context = context;    
+            _context = context;
             //_hosting = hosting;
             _userManager = userManager;
             _serviceProvider = serviceProvider;
         }
-        public async Task SeedAsync() 
+        public async Task SeedAsync()
         {
             var roleManager = _serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var adminRoleExists = await roleManager.RoleExistsAsync("admin");
@@ -49,20 +48,51 @@ namespace JobExchange.Data
                 }
 
             }
+
+
             var isInRole = await _userManager.IsInRoleAsync(Admin, "admin");
             if (!isInRole)
             {
                 await _userManager.AddToRoleAsync(Admin, "admin");
             }
 
+            StoreUser Admin2 = await _userManager.FindByEmailAsync("Admin2@gmail.com");
+            if (Admin2 == null)
+            {
+                Admin2 = new StoreUser()
+                {
+                    FirstName = "Admin2",
+                    LastName = "Admin2",
+                    Email = "Admin2@gmail.com",
+                    UserName = "Admin2@gmail.com"
+                };
+                var result = await _userManager.CreateAsync(Admin2, "P@ssw0rd!");
+                if (result != IdentityResult.Success)
+                {
+                    //throw new InvalidOperationException("Could not create new user in seeder");
+                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                    throw new InvalidOperationException($"Could not create new user in seeder. Errors: {errors}");
+                }
+
+            }
+
+
+            var isInRole2 = await _userManager.IsInRoleAsync(Admin2, "admin");
+            if (!isInRole2)
+            {
+                await _userManager.AddToRoleAsync(Admin2, "admin");
+            }
+
             StoreUser user = await _userManager.FindByEmailAsync("luckyphuocs@gmail.com");
             if (user == null)
             {
-                user = new StoreUser() { 
-                    FirstName = "Lucky", 
-                    LastName = "Phuoc", 
-                    Email = "luckyphuocs@gmail.com", 
-                    UserName = "luckyphuocs@gmail.com" };
+                user = new StoreUser()
+                {
+                    FirstName = "Lucky",
+                    LastName = "Phuoc",
+                    Email = "luckyphuocs@gmail.com",
+                    UserName = "luckyphuocs@gmail.com"
+                };
                 var result = await _userManager.CreateAsync(user, "P@ssw0rd!");
                 if (result != IdentityResult.Success)
                 {
@@ -72,7 +102,7 @@ namespace JobExchange.Data
                 }
             }
 
-            if (!_context.Employers.Any()&&user!=null)
+            if (!_context.Employers.Any() && user != null)
             {
 
                 _context.Employers.AddRange(
@@ -84,11 +114,11 @@ namespace JobExchange.Data
                     Phone = "0932403242",
                     User = user
 
-                });             
+                });
 
                 _context.SaveChanges();
             }
-            if(!_context.TypeJobs.Any()) 
+            if (!_context.TypeJobs.Any())
             {
                 _context.TypeJobs.AddRange(
                     new TypeJob
@@ -115,6 +145,6 @@ namespace JobExchange.Data
             }
 
         }
-       
+
     }
 }
