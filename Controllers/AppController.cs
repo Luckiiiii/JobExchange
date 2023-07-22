@@ -22,11 +22,15 @@ namespace JobExchange.Controllers
         {
             return View();
         }
-        public IActionResult EmployerView()
+
+        public async Task<IActionResult> EmployerView(Employer model)
         {
-            ViewBag.Title = "Employer View";
-            return View();
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var infoEmployer = await _repository.GetEmployerByUserId(user.Id);
+
+            return View(infoEmployer);
         }
+
         //Hien tat ca thong tin tuyen dung
         public IActionResult ShowJobInfo()
         {
@@ -205,6 +209,50 @@ namespace JobExchange.Controllers
             return View("index");
         }
 
+        public async Task<IActionResult> UpdateEmployer(Employer model)
+        {
+            try
+            {
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                var hasEmployer = await _repository.HasEmployer(user.Id);
+                var existingEmployer = await _repository.GetEmployerByUserId(user.Id);
 
+                if (user != null && existingEmployer != null)
+                {
+                    // Gán thông tin của model vào JobInfo hiện tại
+                    existingEmployer.CompanyName = model.CompanyName;
+                    existingEmployer.Phone = model.Phone;
+                    existingEmployer.Email = model.Email;
+                    existingEmployer.AddressOfCompany = model.AddressOfCompany;
+
+                    _repository.UpdateEmployer(existingEmployer);
+                    return View("index");
+                }
+
+                else if (user != null && !hasEmployer)
+                {
+                    var newEmployer = new Employer()
+                    {
+                        CompanyName = model.CompanyName,
+                        AddressOfCompany = model.AddressOfCompany,
+                        Email = model.Email,
+                        Phone = model.Phone,
+                        User = user
+                    };
+                    _repository.AddEntity(newEmployer);
+                    _repository.SaveChanges();
+                    return View("index");
+                }
+                else
+                {
+                    return View("index");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Failed to save a new order: {ex}");
+            }
+            return View("index");
+        }
     }
 }

@@ -39,24 +39,35 @@ namespace JobExchange.Controllers
                 if (result.Succeeded)
                 {
                     var user = await _userManager.FindByNameAsync(model.Username);
+
+
                     if (user != null)
                     {
                         var hasEmployer = await _repository.HasEmployer(user.Id);
-                        if (Request.Query.Keys.Contains("ReturnUrl"))
+
+                        if (await _userManager.IsInRoleAsync(user, "admin"))
                         {
-                            return Redirect(Request.Query["ReturnUrl"].First());
+                            return RedirectToAction("Index", "App");
                         }
                         else
                         {
-                            if (hasEmployer)
+                            if (Request.Query.Keys.Contains("ReturnUrl"))
                             {
-                                /* return RedirectToAction("Index", "App");*/
-                                return RedirectToAction("ShowJobInfoUser", "App");
+                                return Redirect(Request.Query["ReturnUrl"].First());
                             }
                             else
                             {
-                                return RedirectToAction("EmployerView", "App");
+                                if (hasEmployer)
+                                {
+                                    /* return RedirectToAction("Index", "App");*/
+                                    return RedirectToAction("ShowJobInfoUser", "App");
+                                }
+                                else
+                                {
+                                    return RedirectToAction("EmployerView", "App");
+                                }
                             }
+
                         }
                     }
                 }
