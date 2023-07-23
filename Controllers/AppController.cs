@@ -1,11 +1,8 @@
 ﻿using JobExchange.Data;
 using JobExchange.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using System.Runtime;
 
 namespace JobExchange.Controllers
 {
@@ -44,7 +41,7 @@ namespace JobExchange.Controllers
             return View(allJobInfo);
             //return Json(allJobInfo);
         }
-        public async Task <IActionResult> ShowJobInfoUser()
+        public async Task<IActionResult> ShowJobInfoUser()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user != null)
@@ -56,6 +53,7 @@ namespace JobExchange.Controllers
 
             return RedirectToAction("Index");
         }
+
         public async Task<IActionResult> ShowJobInfoByUser()
         {
             // Lấy danh sách công việc từ repository
@@ -102,7 +100,7 @@ namespace JobExchange.Controllers
             _repository.DeleteJobInfo(id);
             return RedirectToAction("ShowJobInfo");
         }
-        
+
         //Hien thi TypeJob trong selected
         public IActionResult JobView()
         {

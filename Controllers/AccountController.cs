@@ -25,8 +25,8 @@ namespace JobExchange.Controllers
         {
             if (this.User.Identity.IsAuthenticated)
             {
-                            
-                return RedirectToAction("Index", "App");
+
+                return RedirectToAction("ShowJobInfo", "App");
             }
             return View();
         }
@@ -45,25 +45,30 @@ namespace JobExchange.Controllers
                     if (user != null)
                     {
                         var hasEmployer = await _repository.HasEmployer(user.Id);
-                        if (Request.Query.Keys.Contains("ReturnUrl"))
+
+                        if (await _userManager.IsInRoleAsync(user, "admin"))
                         {
-                            return Redirect(Request.Query["ReturnUrl"].First());
+                            return RedirectToAction("Index", "App");
                         }
                         else
                         {
-                            var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
-                            if (isAdmin)
+                            if (Request.Query.Keys.Contains("ReturnUrl"))
                             {
-                                return RedirectToAction("JobView", "App"); // Chuyển hướng đến trang AdminDashboard
-                            }
-                            if (hasEmployer)
-                            {
-                                return RedirectToAction("Index", "App");
+                                return Redirect(Request.Query["ReturnUrl"].First());
                             }
                             else
                             {
-                                return RedirectToAction("EmployerView", "App");
+                                if (hasEmployer)
+                                {
+                                    /* return RedirectToAction("Index", "App");*/
+                                    return RedirectToAction("ShowJobInfoUser", "App");
+                                }
+                                else
+                                {
+                                    return RedirectToAction("EmployerView", "App");
+                                }
                             }
+
                         }
                     }
                 }

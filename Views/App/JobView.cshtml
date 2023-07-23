@@ -1,7 +1,6 @@
 ﻿@{
     Layout = "_LayoutEmployer";
 }
-*@
 @*<div asp-for="Employer">
                     @Html.DropDownListFor(model => model.Employer.Id,(IEnumerable<SelectListItem>)ViewBag.listEmployer,"---Select name---",new {@class="form-controller", @name = "Employer"})
                     @Html.HiddenFor(model => model.Employer.CompanyName)
