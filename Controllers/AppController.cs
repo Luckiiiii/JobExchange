@@ -1,8 +1,11 @@
 ﻿using JobExchange.Data;
 using JobExchange.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using System.Runtime;
 
 namespace JobExchange.Controllers
 {
@@ -18,6 +21,9 @@ namespace JobExchange.Controllers
             _userManager = userManager;
             _logger = logger;
         }
+        //them truoc controller can phai co quyen
+        //[Authorize(Roles ="admin")] quyen admin
+        //[Authorize] quyen nguoi dang nhap
         public IActionResult Index()
         {
             return View();
@@ -36,17 +42,30 @@ namespace JobExchange.Controllers
         {
             var allJobInfo = _repository.GetAllJobs(); // Lấy thông tin của tất cả các JobInfo từ repository
             return View(allJobInfo);
+            //return Json(allJobInfo);
         }
-        public async Task<IActionResult> ShowJobInfoUser()
+        public async Task <IActionResult> ShowJobInfoUser()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (user != null)
             {
                 var userId = user.Id;
                 var existingJobInfo = await _repository.GetJobInfosByUserId(userId);
-                return View(existingJobInfo);
+                return PartialView(existingJobInfo);
             }
 
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> ShowJobInfoByUser()
+        {
+            // Lấy danh sách công việc từ repository
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user != null)
+            {
+                var userId = user.Id;
+                var jobInfos = _repository.GetJobInfosByUserId(userId);
+                return Json(jobInfos);
+            }
             return RedirectToAction("Index");
         }
         //cap nhat thong tin tuyen dung
@@ -83,7 +102,7 @@ namespace JobExchange.Controllers
             _repository.DeleteJobInfo(id);
             return RedirectToAction("ShowJobInfo");
         }
-
+        
         //Hien thi TypeJob trong selected
         public IActionResult JobView()
         {

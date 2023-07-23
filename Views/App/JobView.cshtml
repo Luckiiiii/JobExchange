@@ -1,7 +1,11 @@
 ﻿@{
     Layout = "_LayoutEmployer";
 }
-
+*@
+@*<div asp-for="Employer">
+                    @Html.DropDownListFor(model => model.Employer.Id,(IEnumerable<SelectListItem>)ViewBag.listEmployer,"---Select name---",new {@class="form-controller", @name = "Employer"})
+                    @Html.HiddenFor(model => model.Employer.CompanyName)
+                </div>*@
 @model JobInfo
 <h4 class="text-center mb-4">Thêm thông tin về việc làm</h4>
 
@@ -34,10 +38,7 @@
                     )
                     @Html.HiddenFor(model => model.TypeJob.NameJob)
                 </div>
-                @*<div asp-for="Employer">
-                    @Html.DropDownListFor(model => model.Employer.Id,(IEnumerable<SelectListItem>)ViewBag.listEmployer,"---Select name---",new {@class="form-controller", @name = "Employer"})
-                    @Html.HiddenFor(model => model.Employer.CompanyName)
-                </div>*@
+                
             </div>
             <div class="">
                 <label asp-for="Describe" class="form-label">Mô tả công việc <span class="text-danger">*</span></label>
