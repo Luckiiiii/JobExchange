@@ -26,6 +26,11 @@ namespace JobExchange.Controllers
             return View();
         }
 
+        public IActionResult UserInfo()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> EmployerView(Employer model)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);

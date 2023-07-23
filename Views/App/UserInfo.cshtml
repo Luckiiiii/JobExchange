@@ -1,0 +1,33 @@
+﻿@{
+    Layout = "_LayoutHomePage";
+}
+
+<div class="container">
+    <h4 class="text-center mb-4 mt-4">Danh sách nhà tuyển dụng</h4>
+    <div class="table-responsive">
+        <table class="table table-striped table-borderless ">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Email</th>
+                    <th>Name</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>nguyenthuhuyen</td>
+                    <td>Huyen Nguyen</td>
+                    <td>
+                        <form asp-action="DeleteJobInfo" asp-route-id="" method="post">
+                            <input type="submit" value="Xóa" class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa công việc này không?');" />
+                        </form>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
