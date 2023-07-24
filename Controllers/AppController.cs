@@ -28,7 +28,7 @@ namespace JobExchange.Controllers
             return View();
         }
 
-        public async Task <IActionResult> UserInfo()
+        public async Task<IActionResult> UserInfo()
         {
             var users = await _userManager.Users.ToListAsync();
             return View(users);
@@ -107,6 +107,12 @@ namespace JobExchange.Controllers
         {
             _repository.DeleteJobInfo(id);
             return RedirectToAction("ShowJobInfo");
+        }
+
+        public IActionResult Delete(int id)
+        {
+            _repository.DeleteJobInfo(id);
+            return Ok();
         }
 
         //Hien thi TypeJob trong selected
@@ -233,7 +239,7 @@ namespace JobExchange.Controllers
             }
             return View("index");
         }
-        
+
 
         public async Task<IActionResult> UpdateEmployer(Employer model)
         {
