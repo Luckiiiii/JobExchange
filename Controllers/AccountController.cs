@@ -117,5 +117,34 @@ namespace JobExchange.Controllers
             await _signInManger.SignOutAsync();
             return RedirectToAction("ShowJobInfo", "App");
         }
+        //[HttpPost]
+        public async Task<IActionResult> DeleteUserById(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var hasEmployer = await _repository.GetEmployerByUserId(userId);
+
+            if (user == null)
+            {
+                // Nếu không tìm thấy tài khoản người dùng, xử lý lỗi hoặc thông báo không tìm thấy
+                return NotFound();
+            }
+            //var hasJobInfo = await _repository.HasJobInfoByEmployer(hasEmployer.Id);
+            //_repository.DeleteJobInfoByEmployerId(hasEmployer.Id);
+            await _repository.DeleteJobInfoByEmployerId(hasEmployer.Id);
+            _repository.DeleteEmployer(hasEmployer.Id);
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                // Xóa thành công
+                return RedirectToAction("UserInfo", "App");
+            }
+            else
+            {
+                // Xóa không thành công, xử lý lỗi hoặc thông báo lỗi
+                return View("Error");
+            }
+
+        }
     }
 }

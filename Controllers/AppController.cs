@@ -3,6 +3,7 @@ using JobExchange.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobExchange.Controllers
 {
@@ -23,12 +24,14 @@ namespace JobExchange.Controllers
         //[Authorize] quyen nguoi dang nhap
         public IActionResult Index()
         {
+
             return View();
         }
 
-        public IActionResult UserInfo()
+        public async Task <IActionResult> UserInfo()
         {
-            return View();
+            var users = await _userManager.Users.ToListAsync();
+            return View(users);
         }
 
         public async Task<IActionResult> EmployerView(Employer model)
@@ -230,6 +233,7 @@ namespace JobExchange.Controllers
             }
             return View("index");
         }
+        
 
         public async Task<IActionResult> UpdateEmployer(Employer model)
         {

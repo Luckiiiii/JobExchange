@@ -47,6 +47,14 @@ namespace JobExchange.Data
         {
             return await _context.Employers.AnyAsync(e => e.User.Id == userId);
         }
+        public async Task<Employer> HasEmployerByUser(string userId)
+        {
+            return await _context.Employers.FirstOrDefaultAsync(e => e.User.Id == userId);
+        }
+        public async Task<bool> HasJobInfoByEmployer(int employerId)
+        {
+            return await _context.JobInfos.AnyAsync(e=>e.Employer.Id == employerId);
+        }
         public IEnumerable<JobInfo> GetAllJobs()
         {
             return _context.JobInfos
@@ -77,6 +85,15 @@ namespace JobExchange.Data
                 _context.SaveChanges();
             }
         }
+        public void DeleteEmployer(int employerId)
+        {
+            var employer = _context.Employers.Find(employerId);
+            if (employer != null)
+            {
+                _context.Employers.Remove(employer);
+                _context.SaveChanges();
+            }
+        }
         public bool SaveAll()
         {
             return _context.SaveChanges() > 0;
@@ -103,9 +120,36 @@ namespace JobExchange.Data
                 .FirstOrDefault();
         }
 
+        public async Task DeleteJobInfoByEmployerId(int employerId)
+        {
+            // Truy vấn tập hợp các đối tượng JobInfo dựa trên employerId
+            var jobInfosToDelete = await _context.JobInfos
+                .Where(job => job.Employer.Id == employerId)
+                .ToListAsync();
+
+            // Xóa tập hợp các đối tượng JobInfo
+            _context.JobInfos.RemoveRange(jobInfosToDelete);
+
+            // Lưu thay đổi vào cơ sở dữ liệu
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<Employer> GetEmployerByUserId(String userId)
         {
             return await _context.Employers.FirstOrDefaultAsync(e => e.User.Id == userId);
+        }
+
+        public async Task <int> GetEmployerByUser(String userId)
+        {
+            var employer = await _context.Employers.FirstOrDefaultAsync(e => e.User.Id == userId);
+
+            if (employer != null)
+            {
+                return employer.Id;
+            }
+
+            // Trả về một giá trị không hợp lệ (ví dụ: -1) nếu không tìm thấy Employer.
+            return -1;
         }
         public async Task<IEnumerable<JobInfo>> GetJobInfosByUserId(string userId)
         {

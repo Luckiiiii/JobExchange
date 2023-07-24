@@ -101,6 +101,61 @@ namespace JobExchange.Data
                     throw new InvalidOperationException($"Could not create new user in seeder. Errors: {errors}");
                 }
             }
+            StoreUser user1 = await _userManager.FindByEmailAsync("user1@gmail.com");
+            if (user1 == null)
+            {
+                user1 = new StoreUser()
+                {
+                    FirstName = "user1",
+                    LastName = "Phuoc",
+                    Email = "user1@gmail.com",
+                    UserName = "user1@gmail.com"
+                };
+                var result = await _userManager.CreateAsync(user1, "P@ssw0rd!");
+                if (result != IdentityResult.Success)
+                {
+                    //throw new InvalidOperationException("Could not create new user in seeder");
+                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                    throw new InvalidOperationException($"Could not create new user in seeder. Errors: {errors}");
+                }
+            }
+
+            StoreUser user2 = await _userManager.FindByEmailAsync("user2@gmail.com");
+            if (user2 == null)
+            {
+                user2 = new StoreUser()
+                {
+                    FirstName = "user2",
+                    LastName = "Phuoc",
+                    Email = "user2@gmail.com",
+                    UserName = "user2@gmail.com"
+                };
+                var result = await _userManager.CreateAsync(user2, "P@ssw0rd!");
+                if (result != IdentityResult.Success)
+                {
+                    //throw new InvalidOperationException("Could not create new user in seeder");
+                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                    throw new InvalidOperationException($"Could not create new user in seeder. Errors: {errors}");
+                }
+            }
+            StoreUser user3 = await _userManager.FindByEmailAsync("user3@gmail.com");
+            if (user3 == null)
+            {
+                user2 = new StoreUser()
+                {
+                    FirstName = "user3",
+                    LastName = "Phuoc",
+                    Email = "user3@gmail.com",
+                    UserName = "user3@gmail.com"
+                };
+                var result = await _userManager.CreateAsync(user3, "P@ssw0rd!");
+                if (result != IdentityResult.Success)
+                {
+                    //throw new InvalidOperationException("Could not create new user in seeder");
+                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                    throw new InvalidOperationException($"Could not create new user in seeder. Errors: {errors}");
+                }
+            }
 
             if (!_context.Employers.Any() && user != null)
             {

@@ -21,6 +21,12 @@ namespace JobExchange.Data
         JobInfo GetJobById(int id);
         void UpdateJobInfo(JobInfo jobInfo);
         Task<IEnumerable<JobInfo>> GetJobInfosByUserId(string userId);
+        Task<bool> HasJobInfoByEmployer(int employerId);
+        Task<Employer> HasEmployerByUser(string userId);
+        Task DeleteJobInfoByEmployerId(int employerId);
+        Task<int> GetEmployerByUser(String userId);
+        void DeleteEmployer(int employerId);
+
 
     }
 }

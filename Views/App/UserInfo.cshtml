@@ -1,10 +1,35 @@
-﻿@{
+﻿c@{
     Layout = "_LayoutHomePage";
 }
-
+@model IEnumerable<StoreUser>
 <div class="container">
     <h4 class="text-center mb-4 mt-4">Danh sách nhà tuyển dụng</h4>
-    <div class="table-responsive">
+    @foreach (var user in Model)
+    {
+        <div class="col-lg-6">
+            <div class="d-flex flex-column border rounded-4 p-4" style="height: 100%">
+                <div class="d-flex justify-content-between">
+                    <h5 class="fw-semibold">@user.FirstName</h5>
+                    @if (User.IsInRole("admin"))
+                    {
+                        <form asp-controller="Account" asp-action="DeleteUserById" asp-route-id="@user.Id" method="post">
+                            <input name="userId" value="@user.Id" type="hidden"/>
+                            <button type="submit">Submit</button>
+                        </form>
+                    }
+                    else
+                    {
+                        <div></div>
+                    }
+                </div>
+                <div>@user.LastName</div>
+                <div>@user.Email</div>
+                <div>@user.Id</div>
+                
+            </div>
+        </div>
+    }
+    @*<div class="table-responsive">
         <table class="table table-striped table-borderless ">
             <thead>
                 <tr>
@@ -28,6 +53,6 @@
 
             </tbody>
         </table>
-    </div>
+    </div>*@
 
 </div>
