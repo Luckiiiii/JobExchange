@@ -16,15 +16,15 @@
         </div>
         @foreach (var jobInfo in Model)
         {
-            <div class="col-lg-6">
+            <div class="col-lg-6" data-id="@jobInfo.Id">
                 <div class="d-flex flex-column border rounded-4 p-4" style="height: 100%">
                     <div class="d-flex justify-content-between">
                         <h5 class="fw-semibold">@jobInfo.Position</h5>
                         @if (User.IsInRole("admin"))
                         {
-                            <form asp-action="DeleteJobInfoByUser" asp-route-id="@jobInfo.Id" method="post">
-                                <input type="submit" value="Xóa" class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa công việc này không?');" />
-                            </form>
+                            <div class="d-flex gap-3">
+                                <button class="delete btn btn-danger rounded" data-id="@jobInfo.Id">Delete</button>
+                            </div>
                         }
                         else
                         {
@@ -51,3 +51,40 @@
     </div>
 </div>
 
+
+@section scripts {
+    <script>
+        function deleteJob(jobId) {
+            // Khởi tạo XMLHttpRequest object
+            var xhr = new XMLHttpRequest();
+
+            xhr.open("DELETE", "/App/Delete/" + jobId, true);
+
+            // Định nghĩa hàm callback để xử lý khi yêu cầu hoàn thành
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var listItem = document.querySelector("div[data-id='" + jobId + "']");
+                        if (listItem) {
+                            listItem.remove();
+                        }
+                    } else {
+                        console.error("Lỗi khi xóa công việc: " + xhr.status);
+                    }
+                }
+            };
+
+            // Gửi yêu cầu xóa công việc
+            xhr.send();
+        }
+
+        var deleteButtons = document.querySelectorAll(".delete");
+        deleteButtons.forEach(function (btn) {
+            btn.addEventListener("click", function () {
+                var jobId = btn.getAttribute("data-id");
+                deleteJob(jobId);
+            });
+        });
+
+    </script>
+}
