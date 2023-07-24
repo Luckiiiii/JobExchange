@@ -6,6 +6,7 @@
 
 <div class="container">
     <h4 class="text-center mb-4 mt-4">Danh sách việc làm</h4>
+    
     @if (Model.Any())
     {
         <div class="table-responsive">
@@ -32,9 +33,10 @@
                                     <form asp-action="UpdateJobInfo" asp-route-id="@jobInfo.Id" method="post">
                                         <input type="submit" value="Update" class="btn btn-info" />
                                     </form>
-                                    <form asp-action="DeleteJobInfo" asp-route-id="@jobInfo.Id" method="post">
+                                    @*<form asp-action="DeleteJobInfo" asp-route-id="@jobInfo.Id" method="post">
                                         <input type="submit" value="Xóa" class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa công việc này không?');" />
-                                    </form>
+                                    </form>*@
+                                    <button class="delete" data-id="@jobInfo.Id">Delete</button>
                                 </div>
                             </td>
                         </tr>

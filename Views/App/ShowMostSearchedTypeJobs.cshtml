@@ -1,0 +1,9 @@
+﻿@model IEnumerable<TypeJob>
+
+<h4>Top @Model.Count() Most Searched Type Jobs:</h4>
+<ul>
+    @foreach (var typeJob in Model)
+    {
+        <li>@typeJob.NameJob - @typeJob.JobInfos.Count() công việc</li>
+    }
+</ul>

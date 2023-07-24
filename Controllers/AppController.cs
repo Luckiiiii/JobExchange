@@ -1,9 +1,11 @@
 ﻿using JobExchange.Data;
+using JobExchange.Migrations;
 using JobExchange.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace JobExchange.Controllers
 {
@@ -42,13 +44,54 @@ namespace JobExchange.Controllers
             return View(infoEmployer);
         }
 
+        public IActionResult SearchTypeJobInfo(string typeJobName)
+        {
+            if (typeJobName != null)
+            {
+                var searchTypeJob = _repository.SearchJobInfoByTypeJobName(typeJobName);
+                return View("ShowJobInfo", searchTypeJob);
+            }
+            return View("ShowJobInfo");
+        }
+        /*public IActionResult SearchTypeJobInfo(string typeJobName)
+        {
+            if (typeJobName != null)
+            {
+                var searchTypeJob = _repository.SearchJobInfoByTypeJobName(typeJobName);
+                var mostSearchedTypeJobs = _repository.GetMostSearchedTypeJobNames(); // Lấy 5 TypeJob có lượt tìm kiếm nhiều nhất
+                ViewBag.MostSearchedTypeJobs = mostSearchedTypeJobs;
+                return View("ShowJobInfo", searchTypeJob);
+            }
+            return View("ShowJobInfo");
+        }*/
+
+        public async Task<IActionResult> ShowJobInfo(int pageNumber = 1, int pageSize = 2)
+        {
+            var totalJobInfo = await _repository.GetTotalJobInfo();
+            if (totalJobInfo != null && totalJobInfo is int)
+            {
+                var totalPages = (int)Math.Ceiling(totalJobInfo / (double)pageSize); // Số lượng trang
+                var jobInfos = _repository.GetJobInfosWithPagination(pageNumber, pageSize);
+                ViewBag.CurrentPage = pageNumber;
+                ViewBag.TotalPages = totalPages;
+                return View(jobInfos);
+            }
+            return View();
+
+        }
+
+        public IActionResult ShowMostSearchedTypeJobs(int count)
+        {
+            var mostSearchedTypeJobs = _repository.GetMostSearchedTypeJobs(count);
+            return View(mostSearchedTypeJobs);
+        }
         //Hien tat ca thong tin tuyen dung
-        public IActionResult ShowJobInfo()
+       /* public IActionResult ShowJobInfo()
         {
             var allJobInfo = _repository.GetAllJobs(); // Lấy thông tin của tất cả các JobInfo từ repository
             return View(allJobInfo);
             //return Json(allJobInfo);
-        }
+        }*/
         public async Task<IActionResult> ShowJobInfoUser()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
@@ -61,6 +104,8 @@ namespace JobExchange.Controllers
 
             return RedirectToAction("Index");
         }
+
+
 
         public async Task<IActionResult> ShowJobInfoByUser()
         {
@@ -100,10 +145,15 @@ namespace JobExchange.Controllers
             // Gán thông tin của TypeJob vào JobInfo hiện tại
             existingJob.TypeJob = existingTypeJob;
             _repository.UpdateJobInfo(existingJob);
-            return RedirectToAction("ShowJobInfo");
+            return RedirectToAction("ShowJobInfoUser");
         }
         //Xoa thong tin tuyen dung cu the
         public IActionResult DeleteJobInfo(int id)
+        {
+            _repository.DeleteJobInfo(id);
+            return RedirectToAction("ShowJobInfoUser");
+        }
+        public IActionResult DeleteJobInfoByAdmin(int id)
         {
             _repository.DeleteJobInfo(id);
             return RedirectToAction("ShowJobInfo");

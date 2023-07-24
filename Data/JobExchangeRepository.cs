@@ -55,6 +55,10 @@ namespace JobExchange.Data
         {
             return await _context.JobInfos.AnyAsync(e=>e.Employer.Id == employerId);
         }
+        public async Task<int> GetTotalJobInfo()
+        {
+            return await _context.JobInfos.CountAsync();
+        }
         public IEnumerable<JobInfo> GetAllJobs()
         {
             return _context.JobInfos
@@ -155,6 +159,49 @@ namespace JobExchange.Data
         {
             return _context.JobInfos
                 .Where(job => job.Employer.User.Id == userId)
+                .ToList();
+        }
+
+        public async Task<List<JobInfo>> SearchJobInfo(double minSalary, double maxSalary, string address, string position, DateTime postTime, int typeJobId, string typeJobName)
+        {
+            // Thực hiện truy vấn để lấy danh sách JobInfo
+            var query = from jobInfo in _context.Set<JobInfo>()
+                        where jobInfo.Salary >= minSalary ||
+                              jobInfo.Salary <= maxSalary ||
+                              jobInfo.Address.Contains(address) ||
+                              jobInfo.Position.Contains(position) ||
+                              jobInfo.PostTime.Date == postTime.Date || // So sánh theo ngày (không tính giờ)
+                              jobInfo.TypeJob.Id == typeJobId || // So sánh Id của TypeJob
+                              jobInfo.TypeJob.NameJob.Contains(typeJobName) // Tìm kiếm theo tên TypeJob
+                        select jobInfo;
+
+            return await query.ToListAsync();
+        }
+
+        public IEnumerable<JobInfo> SearchJobInfoByTypeJobName(string typeJobName)
+        {
+            return _context.JobInfos
+                .Include(o => o.Employer)
+                .Where(job => job.TypeJob.NameJob==typeJobName)
+                .ToList();
+        }
+
+        public IEnumerable<JobInfo> GetJobInfosWithPagination(int pageNumber, int pageSize)
+        {
+            return _context.JobInfos
+                .Include(o => o.TypeJob)
+                .Include(o => o.Employer)
+                .OrderByDescending(job => job.PostTime) // Sắp xếp theo ngày đăng mới nhất
+                .Skip((pageNumber - 1) * pageSize) // Bỏ qua các bản ghi trước trang hiện tại
+                .Take(pageSize) // Lấy số lượng bản ghi trên một trang
+                .ToList();
+        }
+
+        public IEnumerable<TypeJob> GetMostSearchedTypeJobs(int count)
+        {
+            return _context.TypeJobs
+                .OrderByDescending(typeJob => typeJob.JobInfos.Count())
+                .Take(count)
                 .ToList();
         }
 

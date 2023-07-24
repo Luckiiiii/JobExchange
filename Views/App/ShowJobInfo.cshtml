@@ -7,6 +7,13 @@
 <div class="container">
     <h4 class="text-center mb-4 mt-4">Danh sách các công việc</h4>
     <div class="row g-4">
+        <div>
+            <form asp-action="SearchTypeJobInfo" method="post">
+                <label>Tìm kiếm theo loại công việc:</label>
+                <input type="text" name="typeJobName" />
+                <button type="submit">Tìm kiếm</button>
+            </form>
+        </div>
         @foreach (var jobInfo in Model)
         {
             <div class="col-lg-6">
@@ -15,7 +22,7 @@
                         <h5 class="fw-semibold">@jobInfo.Position</h5>
                         @if (User.IsInRole("admin"))
                         {
-                            <form asp-action="DeleteJobInfo" asp-route-id="@jobInfo.Id" method="post">
+                            <form asp-action="DeleteJobInfoByUser" asp-route-id="@jobInfo.Id" method="post">
                                 <input type="submit" value="Xóa" class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa công việc này không?');" />
                             </form>
                         }
@@ -33,6 +40,14 @@
                 </div>
             </div>
         }
+        <div class="pagination">
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <a href="@Url.Action("ShowJobInfo", new { pageNumber = i })" class="@(ViewBag.CurrentPage == i ? "active" : "")">@i</a>
+            }
+        </div>
+       
+
     </div>
 </div>
 

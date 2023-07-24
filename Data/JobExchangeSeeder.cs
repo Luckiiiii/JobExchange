@@ -120,28 +120,11 @@ namespace JobExchange.Data
                 }
             }
 
-            StoreUser user2 = await _userManager.FindByEmailAsync("user2@gmail.com");
-            if (user2 == null)
-            {
-                user2 = new StoreUser()
-                {
-                    FirstName = "user2",
-                    LastName = "Phuoc",
-                    Email = "user2@gmail.com",
-                    UserName = "user2@gmail.com"
-                };
-                var result = await _userManager.CreateAsync(user2, "P@ssw0rd!");
-                if (result != IdentityResult.Success)
-                {
-                    //throw new InvalidOperationException("Could not create new user in seeder");
-                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                    throw new InvalidOperationException($"Could not create new user in seeder. Errors: {errors}");
-                }
-            }
+            
             StoreUser user3 = await _userManager.FindByEmailAsync("user3@gmail.com");
             if (user3 == null)
             {
-                user2 = new StoreUser()
+                user3 = new StoreUser()
                 {
                     FirstName = "user3",
                     LastName = "Phuoc",

@@ -1,4 +1,5 @@
 ﻿using JobExchange.Models;
+using System.Threading.Tasks;
 
 namespace JobExchange.Data
 {
@@ -27,6 +28,11 @@ namespace JobExchange.Data
         Task<int> GetEmployerByUser(String userId);
         void DeleteEmployer(int employerId);
 
+        Task<List<JobInfo>> SearchJobInfo(double minSalary, double maxSalary, string address, string position, DateTime postTime, int typeJobId, string typeJobName);
+        IEnumerable<JobInfo> SearchJobInfoByTypeJobName(string typeJobName);
+        IEnumerable<JobInfo> GetJobInfosWithPagination(int pageNumber, int pageSize);
+        Task<int> GetTotalJobInfo();
 
+        IEnumerable<TypeJob> GetMostSearchedTypeJobs(int count);
     }
 }

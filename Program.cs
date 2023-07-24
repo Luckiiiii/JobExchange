@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
+
 builder.Services.AddIdentity<StoreUser, IdentityRole>(cfg =>
 {
     cfg.User.RequireUniqueEmail = true;
@@ -19,6 +20,7 @@ builder.Services.AddDbContextPool<JobExchangeContext>(options => options.UseSqlS
 builder.Services.AddDbContext<JobExchangeContext>();
 builder.Services.AddScoped<IJobExchangeRepository, JobExchangeRepository>();
 builder.Services.AddTransient<JobExchangeSeeder>();
+builder.Services.AddSession();
 
 //builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
@@ -53,6 +55,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthorization();
 
