@@ -1,5 +1,6 @@
 ﻿using JobExchange.Data;
 using JobExchange.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -28,12 +29,14 @@ namespace JobExchange.Controllers
             return View();
         }
 
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> UserInfo()
         {
             var users = await _userManager.Users.ToListAsync();
             return View(users);
         }
 
+        [Authorize]
         public async Task<IActionResult> EmployerView(Employer model)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
@@ -49,6 +52,8 @@ namespace JobExchange.Controllers
             return View(allJobInfo);
             //return Json(allJobInfo);
         }
+
+        [Authorize]
         public async Task<IActionResult> ShowJobInfoUser()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
@@ -62,6 +67,7 @@ namespace JobExchange.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public async Task<IActionResult> ShowJobInfoByUser()
         {
             // Lấy danh sách công việc từ repository
@@ -74,7 +80,9 @@ namespace JobExchange.Controllers
             }
             return RedirectToAction("Index");
         }
+
         //cap nhat thong tin tuyen dung
+        [Authorize]
         public IActionResult UpdateJobInfo(int id)
         {
             var job = _repository.GetJobById(id);
@@ -85,6 +93,8 @@ namespace JobExchange.Controllers
 
             return View(job);
         }
+
+        [Authorize]
         public IActionResult UpdateJob(JobInfo model)
         {
             var existingJob = _repository.GetJobById(model.Id);
@@ -102,13 +112,16 @@ namespace JobExchange.Controllers
             _repository.UpdateJobInfo(existingJob);
             return RedirectToAction("ShowJobInfo");
         }
+
         //Xoa thong tin tuyen dung cu the
+        [Authorize]
         public IActionResult DeleteJobInfo(int id)
         {
             _repository.DeleteJobInfo(id);
             return RedirectToAction("ShowJobInfo");
         }
 
+        [Authorize]
         public IActionResult Delete(int id)
         {
             _repository.DeleteJobInfo(id);
@@ -126,7 +139,9 @@ namespace JobExchange.Controllers
             ViewBag.listEmployer = resultEmployer;*/
             return View();
         }
+
         [HttpPost]
+        [Authorize]
         //Them thong tin tuyen dung
         public async Task<IActionResult> AddJobs(JobInfo model)
         {
@@ -187,6 +202,7 @@ namespace JobExchange.Controllers
         }*/
 
         [HttpPost("EmployerView")]
+        [Authorize]
         //Them nha tuyen dung
         public async Task<IActionResult> AddEmployer(Employer model)
         {
@@ -240,7 +256,7 @@ namespace JobExchange.Controllers
             return View("index");
         }
 
-
+        [Authorize]
         public async Task<IActionResult> UpdateEmployer(Employer model)
         {
             try
