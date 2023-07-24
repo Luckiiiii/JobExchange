@@ -89,7 +89,7 @@ namespace JobExchange.Controllers
             return View(mostSearchedTypeJobs);
         }
         //Hien tat ca thong tin tuyen dung
-       /* public IActionResult ShowJobInfo()
+        public IActionResult ShowJobInfo()
         {
             var allJobInfo = _repository.GetAllJobs(); // Lấy thông tin của tất cả các JobInfo từ repository
             return View(allJobInfo);
