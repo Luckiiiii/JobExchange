@@ -1,12 +1,10 @@
 ﻿using JobExchange.Data;
-using JobExchange.Migrations;
 using JobExchange.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
 
 namespace JobExchange.Controllers
 {
@@ -68,20 +66,19 @@ namespace JobExchange.Controllers
             return View("ShowJobInfo");
         }*/
 
-        public async Task<IActionResult> ShowJobInfo(int pageNumber = 1, int pageSize = 2)
-        {
-            var totalJobInfo = await _repository.GetTotalJobInfo();
-            if (totalJobInfo != null && totalJobInfo is int)
-            {
-                var totalPages = (int)Math.Ceiling(totalJobInfo / (double)pageSize); // Số lượng trang
-                var jobInfos = _repository.GetJobInfosWithPagination(pageNumber, pageSize);
-                ViewBag.CurrentPage = pageNumber;
-                ViewBag.TotalPages = totalPages;
-                return View(jobInfos);
-            }
-            return View();
-
-        }
+        /*        public async Task<IActionResult> ShowJobInfo(int pageNumber = 1, int pageSize = 2)
+                {
+                    var totalJobInfo = await _repository.GetTotalJobInfo();
+                    if (totalJobInfo != null && totalJobInfo is int)
+                    {
+                        var totalPages = (int)Math.Ceiling(totalJobInfo / (double)pageSize); // Số lượng trang
+                        var jobInfos = _repository.GetJobInfosWithPagination(pageNumber, pageSize);
+                        ViewBag.CurrentPage = pageNumber;
+                        ViewBag.TotalPages = totalPages;
+                        return View(jobInfos);
+                    }
+                    return View();
+                }*/
 
         public IActionResult ShowMostSearchedTypeJobs(int count)
         {
@@ -188,6 +185,7 @@ namespace JobExchange.Controllers
             return View();
         }
 
+        // POST: /App/AddJobs
         [HttpPost]
         [Authorize]
         //Them thong tin tuyen dung
@@ -208,10 +206,12 @@ namespace JobExchange.Controllers
 
                     _repository.AddEntity(model);
                     _repository.SaveChanges();
-                    return RedirectToAction("ShowJobInfoUser");
+                    // Trả về kết quả thông báo thành công dưới dạng JSON
+                    return Ok("Form submitted successfully!");
                 }
             }
-            return View();
+            // Trả về kết quả thông báo lỗi dưới dạng JSON
+            return BadRequest("Form data is not valid.");
         }
         /*public IActionResult AddJobs(JobInfo model)
         {
