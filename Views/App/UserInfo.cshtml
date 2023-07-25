@@ -23,7 +23,8 @@
                         <td>@user.Email</td>
                         <td>
                             <form asp-controller="Account" asp-action="DeleteUserById" asp-route-id="@user.Id" method="post">
-                                <input type="submit" value="Xóa" class="btn btn-danger" onclick="return confirm('Bạn có chắc muốn xóa công việc này không?');" />
+                                <input name="userId" value="@user.Id" type="hidden" />
+                                <button type="submit" class="btn btn-danger">Submit</button>
                             </form>
                         </td>
                     </tr>
